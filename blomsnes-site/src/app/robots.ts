@@ -1,12 +1,8 @@
-import type { MetadataRoute } from "next";
-import { SITE_CONFIG } from "@/lib/constants";
+import type { MetadataRoute } from 'next';
 
 export default function robots(): MetadataRoute.Robots {
   return {
-    rules: {
-      userAgent: "*",
-      allow: "/",
-    },
-    sitemap: `${SITE_CONFIG.url}/sitemap.xml`,
+    rules: [{ userAgent: '*', allow: '/', disallow: ['/api/', '/studio/'] }],
+    sitemap: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://blomsnes-site.vercel.app'}/sitemap.xml`,
   };
 }

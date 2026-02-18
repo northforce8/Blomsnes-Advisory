@@ -1,0 +1,15 @@
+{
+  "nav": {
+    "om": "Om oss",
+    "tjanster": "Tjänster",
+    "case": "Case",
+    "blogg": "Blogg",
+    "kontakt": "Kontakt",
+    "boka": "Boka möte"
+  },
+  "common": {
+    "readMore": "Läs mer",
+    "bookConsultation": "Boka konsultation",
+    "backTo": "Tillbaka till"
+  }
+}

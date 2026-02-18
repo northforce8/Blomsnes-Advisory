@@ -1,19 +1,32 @@
-import type { MetadataRoute } from "next";
-import { SITE_CONFIG } from "@/lib/constants";
+import type { MetadataRoute } from 'next';
+import { sanityFetch } from '@/lib/sanity';
+import { demoPosts } from '@/data/demo-posts';
 
-export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = SITE_CONFIG.url;
+const BASE = process.env.NEXT_PUBLIC_SITE_URL || 'https://blomsnes-site.vercel.app';
 
-  return [
-    { url: baseUrl, lastModified: new Date(), changeFrequency: "monthly", priority: 1 },
-    { url: `${baseUrl}/om`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.8 },
-    { url: `${baseUrl}/tjanster`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.9 },
-    { url: `${baseUrl}/strategi-till-resultat`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.8 },
-    { url: `${baseUrl}/coaching`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.8 },
-    { url: `${baseUrl}/blogg`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.7 },
-    { url: `${baseUrl}/case`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.7 },
-    { url: `${baseUrl}/kontakt`, lastModified: new Date(), changeFrequency: "yearly", priority: 0.6 },
-    { url: `${baseUrl}/boka`, lastModified: new Date(), changeFrequency: "yearly", priority: 0.9 },
-    { url: `${baseUrl}/integritetspolicy`, lastModified: new Date(), changeFrequency: "yearly", priority: 0.3 },
-  ];
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const staticRoutes = [
+    '', '/om', '/tjanster', '/strategi-till-resultat', '/coaching',
+    '/utbildningar', '/blogg', '/case', '/kontakt', '/boka', '/integritetspolicy',
+  ].map((p) => ({
+    url: `${BASE}${p}`,
+    lastModified: new Date(),
+    changeFrequency: (p === '/blogg' ? 'daily' : 'weekly') as 'daily' | 'weekly',
+    priority: p === '' ? 1.0 : 0.7,
+  }));
+
+  const posts = await sanityFetch<{ slug: string; publishedAt: string }[]>({
+    query: `*[_type == "post" && defined(slug.current)] | order(publishedAt desc) { "slug": slug.current, publishedAt }`,
+    tags: ['post'],
+  });
+
+  const source = posts.length > 0 ? posts : demoPosts;
+  const blogRoutes = source.map((p) => ({
+    url: `${BASE}/blogg/${p.slug}`,
+    lastModified: new Date(p.publishedAt),
+    changeFrequency: 'monthly' as const,
+    priority: 0.6,
+  }));
+
+  return [...staticRoutes, ...blogRoutes];
 }
