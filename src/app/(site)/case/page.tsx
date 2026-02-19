@@ -30,13 +30,13 @@ function getIndustryQuery(industry: string): string {
 }
 
 export default async function CasePage() {
-  const cases = await sanityFetch<CaseStudy[]>({ query: queries.allCases, params: { lang: 'sv' }, tags: ['case'] });
+  const cases = await sanityFetch<CaseStudy[]>({ query: queries.allCases, params: { lang: 'sv' }, tags: ['case'] }) || [];
   const heroPhoto = await getPageHeroPhoto('case');
   const fallback = getPageFallback('case');
 
   // Fetch one thumbnail per unique industry
   const thumbs = new Map<string, UnsplashPhoto>();
-  if (cases.length > 0) {
+  if (cases && cases.length > 0) {
     const industries = [...new Set(cases.map((c) => c.industry))];
     for (const ind of industries) {
       const results = await searchPhotos(getIndustryQuery(ind), { perPage: 1 });
@@ -61,7 +61,7 @@ export default async function CasePage() {
 
       <section className="px-6 py-24 lg:px-12">
         <div className="mx-auto max-w-content">
-          {cases.length > 0 ? (
+          {cases && cases.length > 0 ? (
             <div className="grid gap-8 md:grid-cols-2">
               {cases.map((cs) => (
                 <Link key={cs.slug} href={`/case/${cs.slug}`} className="group overflow-hidden border border-border bg-white transition-all hover:-translate-y-1 hover:shadow-lg">

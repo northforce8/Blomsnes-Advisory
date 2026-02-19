@@ -10,12 +10,8 @@ const UNSPLASH_API = 'https://api.unsplash.com';
 const UTM_SOURCE = 'blomsnes_advisory';
 const UTM_MEDIUM = 'referral';
 
-function getAccessKey(): string {
-  const key = process.env.UNSPLASH_ACCESS_KEY;
-  if (!key) {
-    throw new Error('UNSPLASH_ACCESS_KEY is not configured');
-  }
-  return key;
+function getAccessKey(): string | null {
+  return process.env.UNSPLASH_ACCESS_KEY || null;
 }
 
 // ─── CURATED FALLBACK IMAGES ────────────
@@ -83,6 +79,8 @@ export async function searchPhotos(
 
   try {
     const accessKey = getAccessKey();
+    if (!accessKey) return [];
+
     const params = new URLSearchParams({
       query: sanitizeQuery(query),
       per_page: String(perPage),
@@ -96,15 +94,11 @@ export async function searchPhotos(
       next: { revalidate: 3600, tags: ['unsplash'] },
     });
 
-    if (!response.ok) {
-      console.error(`Unsplash API error: ${response.status}`);
-      return [];
-    }
+    if (!response.ok) return [];
 
     const data: UnsplashSearchResponse = await response.json();
     return data.results;
-  } catch (error) {
-    console.error('Unsplash search failed:', error);
+  } catch {
     return [];
   }
 }
@@ -114,6 +108,8 @@ export async function searchPhotos(
 export async function getPhoto(id: string): Promise<UnsplashPhoto | null> {
   try {
     const accessKey = getAccessKey();
+    if (!accessKey) return null;
+
     const response = await fetch(`${UNSPLASH_API}/photos/${id}`, {
       headers: { Authorization: `Client-ID ${accessKey}` },
       next: { revalidate: 86400, tags: ['unsplash'] },
@@ -131,6 +127,8 @@ export async function getPhoto(id: string): Promise<UnsplashPhoto | null> {
 export async function triggerDownload(downloadLocation: string): Promise<void> {
   try {
     const accessKey = getAccessKey();
+    if (!accessKey) return;
+
     await fetch(downloadLocation, {
       headers: { Authorization: `Client-ID ${accessKey}` },
     });
@@ -162,7 +160,8 @@ export function buildPhotoPageUrl(photo: UnsplashPhoto): string {
 
 // ─── FALLBACK RESOLVER ──────────────────
 
-export function getFallbackImage(query: string): FallbackImage {
+export function getFallbackImage(query?: string): FallbackImage {
+  if (!query) return fallbackImages['default'];
   const normalized = query.toLowerCase();
   for (const [key, image] of Object.entries(fallbackImages)) {
     if (normalized.includes(key)) return image;
@@ -186,7 +185,8 @@ export const categoryQueryMap: Record<string, string> = {
   'default': 'scandinavian architecture minimal modern',
 };
 
-export function getCategoryQuery(category: string): string {
+export function getCategoryQuery(category?: string): string {
+  if (!category) return categoryQueryMap['default'];
   const normalized = category.toLowerCase().replace(/\s+/g, '-');
   return categoryQueryMap[normalized] || categoryQueryMap['default'];
 }

@@ -20,7 +20,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     tags: ['post'],
   });
 
-  const source = posts.length > 0 ? posts : demoPosts;
+  const source = posts && posts.length > 0 ? posts : demoPosts;
   const blogRoutes = source.map((p) => ({
     url: `${BASE}/blogg/${p.slug}`,
     lastModified: new Date(p.publishedAt),

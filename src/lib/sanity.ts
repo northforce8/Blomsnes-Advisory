@@ -25,14 +25,15 @@ export async function sanityFetch<T>({
   tags?: string[];
 }): Promise<T> {
   try {
-    return await client.fetch<T>(query, params, {
+    const result = await client.fetch<T>(query, params, {
       next: {
         revalidate: process.env.NODE_ENV === 'development' ? 30 : 3600,
         tags,
       },
     });
+    return result ?? (null as unknown as T);
   } catch {
-    return [] as unknown as T;
+    return null as unknown as T;
   }
 }
 
