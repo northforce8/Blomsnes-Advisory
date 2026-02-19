@@ -77,10 +77,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     openGraph: {
       type: 'article',
       title: post.title,
-      description: post.excerpt ?? undefined,
+      description: post.excerpt,
       publishedTime: post.publishedAt,
-      authors: post.author?.name ? [post.author.name] : undefined,
-      tags: post.tags ?? undefined,
+      authors: [post.author.name],
+      tags: post.tags,
     },
   };
 }
@@ -156,7 +156,7 @@ export default async function BlogPostPage({ params }: Props) {
   if (!post) notFound();
 
   // Fetch hero image based on category
-  const categoryQuery = getCategoryQuery(post.category ?? 'business');
+  const categoryQuery = getCategoryQuery(post.category);
   const heroResults = await searchPhotos(categoryQuery, {
     perPage: 1,
     orientation: 'landscape',
@@ -169,7 +169,7 @@ export default async function BlogPostPage({ params }: Props) {
   // Fetch thumbnail photos for related
   const relatedPhotos = new Map<string, UnsplashPhoto>();
   for (const rp of related) {
-    const q = getCategoryQuery(rp.category ?? 'business');
+    const q = getCategoryQuery(rp.category);
     const results = await searchPhotos(q, { perPage: 1 });
     if (results[0]) relatedPhotos.set(rp.slug, results[0]);
   }
@@ -241,21 +241,21 @@ export default async function BlogPostPage({ params }: Props) {
                 Blogg
               </Link>
               <span className="mx-2">/</span>
-              <span className="text-paper/70">{post.category ?? 'Artikel'}</span>
+              <span className="text-paper/70">{post.category}</span>
             </nav>
 
             <p className="mb-4 text-xs font-medium uppercase tracking-widest text-accent-light">
-              {post.category ?? 'Artikel'}
+              {post.category}
             </p>
             <h1 className="font-serif text-[clamp(2rem,4vw,3.5rem)] font-light leading-[1.1] tracking-[-0.025em] text-paper">
               {post.title}
             </h1>
             <div className="mt-6 flex items-center gap-4 text-sm text-paper/60">
               <span className="font-medium text-paper/90">
-                {post.author?.name ?? ''}
+                {post.author.name}
               </span>
               <span className="text-paper/30">·</span>
-              <span>{post.author?.role ?? ''}</span>
+              <span>{post.author.role}</span>
               <span className="text-paper/30">·</span>
               <time dateTime={post.publishedAt}>
                 {formatDate(post.publishedAt)}
@@ -282,7 +282,7 @@ export default async function BlogPostPage({ params }: Props) {
           {/* Tags */}
           <footer className="mt-16 border-t border-border pt-8">
             <div className="flex flex-wrap gap-2">
-              {(post.tags ?? []).map((tag) => (
+              {post.tags.map((tag) => (
                 <span
                   key={tag}
                   className="border border-border px-3 py-1.5 text-xs text-muted transition-colors hover:border-accent hover:text-accent"
@@ -296,14 +296,14 @@ export default async function BlogPostPage({ params }: Props) {
           {/* Author */}
           <div className="mt-12 flex items-center gap-6 border-t border-border pt-12">
             <div className="flex h-16 w-16 items-center justify-center bg-warm font-serif text-xl font-semibold text-accent">
-              {(post.author?.name ?? 'B')
+              {post.author.name
                 .split(' ')
-                .map((n: string) => n[0])
+                .map((n) => n[0])
                 .join('')}
             </div>
             <div>
-              <p className="font-semibold">{post.author?.name ?? ''}</p>
-              <p className="text-sm text-muted">{post.author?.role ?? ''}</p>
+              <p className="font-semibold">{post.author.name}</p>
+              <p className="text-sm text-muted">{post.author.role}</p>
             </div>
           </div>
         </div>
@@ -340,7 +340,7 @@ export default async function BlogPostPage({ params }: Props) {
                     {rp.title}
                   </h3>
                   <p className="text-xs text-muted">
-                    {rp.author?.name ?? ''} · {formatDate(rp.publishedAt)}
+                    {rp.author.name} · {formatDate(rp.publishedAt)}
                   </p>
                 </Link>
               ))}
