@@ -1,9 +1,11 @@
-import type { Metadata } from "next";
 import { AnimatedSection } from "@/components/ui";
-import { SITE_CONFIG } from "@/lib/constants";
+import { BreadcrumbSchema } from "@/components/BreadcrumbSchema";
 import { getTranslations } from "next-intl/server";
 
-export const metadata: Metadata = { title: "Integritetspolicy", description: `Integritetspolicy för ${SITE_CONFIG.name}.` };
+export async function generateMetadata() {
+  const t = await getTranslations('meta');
+  return { title: t('integritetTitle'), description: t('integritetDesc') };
+}
 
 export default async function IntegritetspolicyPage() {
   const t = await getTranslations('privacy');
@@ -22,6 +24,7 @@ export default async function IntegritetspolicyPage() {
 
   return (
     <>
+      <BreadcrumbSchema items={[{ name: t('label'), href: '/integritetspolicy' }]} />
       <section className="py-28 lg:py-36 bg-white">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <AnimatedSection>

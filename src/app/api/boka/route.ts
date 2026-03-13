@@ -18,7 +18,7 @@ export async function POST(request: NextRequest) {
 
     const resend = new Resend(process.env.RESEND_API_KEY);
     await resend.emails.send({
-      from: 'Blomsnes Advisory <noreply@blomsnes-site.vercel.app>',
+      from: process.env.RESEND_FROM_EMAIL || 'NorthForce Advisory <onboarding@resend.dev>',
       to: toEmail,
       replyTo: email,
       subject: `Ny bokningsförfrågan från ${name}`,

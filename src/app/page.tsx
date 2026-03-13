@@ -1,14 +1,8 @@
-import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { AnimatedSection } from "@/components/ui";
-import { SITE_CONFIG } from "@/lib/constants";
 import { getTranslations } from "next-intl/server";
-
-export const metadata: Metadata = {
-  title: `${SITE_CONFIG.name} — Strategisk Affärsutveckling`,
-};
 
 export default async function HomePage() {
   const t = await getTranslations('home');

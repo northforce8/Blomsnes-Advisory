@@ -1,10 +1,13 @@
-import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { AnimatedSection } from "@/components/ui";
+import { BreadcrumbSchema } from "@/components/BreadcrumbSchema";
 import { getTranslations } from "next-intl/server";
 
-export const metadata: Metadata = { title: "Tjänster", description: "Strategisk affärsutveckling, digital transformation, coaching och ledarskap från Blomsnes Development." };
+export async function generateMetadata() {
+  const t = await getTranslations('meta');
+  return { title: t('tjansterTitle'), description: t('tjansterDesc') };
+}
 
 export default async function TjansterPage() {
   const t = await getTranslations('services');
@@ -20,6 +23,7 @@ export default async function TjansterPage() {
 
   return (
     <>
+      <BreadcrumbSchema items={[{ name: t('label'), href: '/tjanster' }]} />
       <section className="py-28 lg:py-36 bg-[#0F172A] text-white">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <AnimatedSection>

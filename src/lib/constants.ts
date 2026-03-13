@@ -1,10 +1,10 @@
 import type { NavItem, Service } from "@/types";
 
 export const SITE_CONFIG = {
-  name: "Blomsnes Development",
-  founder: "Janicke Blomsnes",
-  url: process.env.NEXT_PUBLIC_SITE_URL || "https://blomsnesdevelopment.se",
-  email: "kontakt@blomsnesdevelopment.se",
+  name: "NorthForce Advisory",
+  founder: "NorthForce Advisory",
+  url: process.env.NEXT_PUBLIC_SITE_URL || "https://northforceadvisory.se",
+  email: "kontakt@northforceadvisory.se",
   phone: "+46 70 000 00 00",
   location: "Sverige",
 } as const;

@@ -1,11 +1,14 @@
-import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { AnimatedSection } from "@/components/ui";
+import { BreadcrumbSchema } from "@/components/BreadcrumbSchema";
 import { getTranslations } from "next-intl/server";
 
-export const metadata: Metadata = { title: "Strategi till Resultat", description: "En beprövad metodik från Blomsnes Development som tar er från strategiskt tänkande till konkreta, mätbara resultat." };
+export async function generateMetadata() {
+  const t = await getTranslations('meta');
+  return { title: t('strategiTitle'), description: t('strategiDesc') };
+}
 
 export default async function StrategiTillResultatPage() {
   const t = await getTranslations('strategy');
@@ -19,6 +22,7 @@ export default async function StrategiTillResultatPage() {
 
   return (
     <>
+      <BreadcrumbSchema items={[{ name: t('label'), href: '/strategi-till-resultat' }]} />
       <section className="py-28 lg:py-36 bg-[#0F172A] text-white overflow-hidden">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">

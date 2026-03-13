@@ -1,5 +1,5 @@
 {
-  "name": "blomsnes-site",
+  "name": "northforce-site",
   "version": "1.0.0",
   "private": true,
   "scripts": {
@@ -17,10 +17,13 @@
     "lucide-react": "^0.453.0",
     "next": "^14.2.15",
     "next-intl": "^4.8.3",
+    "next-sanity": "^9.12.3",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "resend": "^6.9.3",
-    "sharp": "^0.34.5"
+    "sanity": "^3.99.0",
+    "sharp": "^0.34.5",
+    "styled-components": "^6.3.11"
   },
   "devDependencies": {
     "@types/node": "^22.8.0",

@@ -1,6 +1,6 @@
-# Blomsnes Development
+# NorthForce Advisory
 
-Webbplats för Blomsnes Development — strategisk affärsutveckling, digital transformation och coaching av Janicke Blomsnes.
+Webbplats för NorthForce Advisory — strategisk affärsutveckling, digital transformation och coaching.
 
 ## Kom igång
 

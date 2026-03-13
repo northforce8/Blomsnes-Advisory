@@ -38,7 +38,7 @@ export function Header() {
           >
             <Image
               src="/logo-dark.svg"
-              alt="Blomsnes Development"
+              alt="NorthForce Advisory"
               width={200}
               height={24}
               className="h-6 w-auto"

@@ -1,14 +1,14 @@
-import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { AnimatedSection } from "@/components/ui";
+import { BreadcrumbSchema } from "@/components/BreadcrumbSchema";
 import { getTranslations } from "next-intl/server";
 
-export const metadata: Metadata = {
-  title: "Om Janicke Blomsnes",
-  description: "Lär känna Janicke Blomsnes — erfaren affärsutvecklare och grundare av Blomsnes Development.",
-};
+export async function generateMetadata() {
+  const t = await getTranslations('meta');
+  return { title: t('omTitle'), description: t('omDesc') };
+}
 
 export default async function OmPage() {
   const t = await getTranslations('about');
@@ -22,6 +22,29 @@ export default async function OmPage() {
 
   return (
     <>
+      <BreadcrumbSchema items={[{ name: t('label'), href: '/om' }]} />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Organization",
+          name: "NorthForce Advisory",
+          description: t('personDesc'),
+          url: "https://northforceadvisory.se/om",
+          parentOrganization: {
+            "@type": "Organization",
+            name: "NorthForce Advisory",
+            url: "https://northforceadvisory.se",
+          },
+          knowsAbout: [
+            "Strategic Business Development",
+            "Digital Transformation",
+            "Leadership Coaching",
+            "Change Management",
+            "Organizational Development",
+          ],
+        }) }}
+      />
       <section className="py-28 lg:py-36 bg-white">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
@@ -46,7 +69,7 @@ export default async function OmPage() {
             </AnimatedSection>
             <AnimatedSection delay={200}>
               <div className="relative aspect-[3/4] overflow-hidden">
-                <Image src="/leadership.jpg" alt="Janicke Blomsnes — Grundare" fill className="object-cover" sizes="(max-width: 1024px) 100vw, 50vw" quality={85} />
+                <Image src="/leadership.jpg" alt="NorthForce Advisory — Våra rådgivare" fill className="object-cover" sizes="(max-width: 1024px) 100vw, 50vw" quality={85} />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#0F172A]/10 to-transparent" />
               </div>
             </AnimatedSection>
@@ -74,6 +97,53 @@ export default async function OmPage() {
                   <p>{t('storyP1')}</p>
                   <p>{t('storyP2')}</p>
                   <p>{t('storyP3')}</p>
+                </div>
+              </AnimatedSection>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Credentials section */}
+      <section className="py-28 lg:py-36 bg-white">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-24">
+            <div className="lg:col-span-4">
+              <AnimatedSection>
+                <div className="sticky top-28">
+                  <div className="flex items-center gap-3 mb-6">
+                    <div className="h-px w-10 bg-[#0F172A]/15" />
+                    <span className="font-body text-[11px] font-semibold tracking-[0.3em] uppercase text-[#0F172A]/40">{t('credLabel')}</span>
+                  </div>
+                  <h2 className="font-display text-3xl md:text-4xl font-bold text-[#0F172A] leading-[1.12] tracking-tight">{t('credTitle')}</h2>
+                </div>
+              </AnimatedSection>
+            </div>
+            <div className="lg:col-span-8">
+              <AnimatedSection delay={100}>
+                <div className="space-y-10 max-w-2xl">
+                  <div>
+                    <h3 className="font-body text-[11px] font-semibold tracking-[0.3em] uppercase text-[#0F172A]/40 mb-4">{t('credExpLabel')}</h3>
+                    <ul className="space-y-3">
+                      {[t('credExp1'), t('credExp2'), t('credExp3'), t('credExp4')].map((item) => (
+                        <li key={item} className="flex items-start gap-4 font-body text-[#4B5563] leading-relaxed">
+                          <div className="w-1.5 h-1.5 rounded-full bg-[#0F172A]/20 mt-2.5 flex-shrink-0" />
+                          <span>{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                  <div>
+                    <h3 className="font-body text-[11px] font-semibold tracking-[0.3em] uppercase text-[#0F172A]/40 mb-4">{t('credSpecLabel')}</h3>
+                    <ul className="space-y-3">
+                      {[t('credSpec1'), t('credSpec2'), t('credSpec3'), t('credSpec4')].map((item) => (
+                        <li key={item} className="flex items-start gap-4 font-body text-[#4B5563] leading-relaxed">
+                          <div className="w-1.5 h-1.5 rounded-full bg-[#0F172A]/20 mt-2.5 flex-shrink-0" />
+                          <span>{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
                 </div>
               </AnimatedSection>
             </div>

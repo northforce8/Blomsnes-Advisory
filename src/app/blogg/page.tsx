@@ -1,12 +1,15 @@
-import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { AnimatedSection } from "@/components/ui";
+import { BreadcrumbSchema } from "@/components/BreadcrumbSchema";
 import { formatDate } from "@/lib/utils";
 import { sanityFetch, queries } from "@/lib/sanity";
 import { getTranslations } from "next-intl/server";
 
-export const metadata: Metadata = { title: "Blogg", description: "Insikter om affärsutveckling, ledarskap och tillväxt från Blomsnes Development." };
+export async function generateMetadata() {
+  const t = await getTranslations('meta');
+  return { title: t('bloggTitle'), description: t('bloggDesc') };
+}
 
 /* ── Sanity post type ── */
 
@@ -68,6 +71,7 @@ export default async function BloggPage() {
 
   return (
     <>
+      <BreadcrumbSchema items={[{ name: t('label'), href: '/blogg' }]} />
       <section className="py-28 lg:py-36 bg-white">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <AnimatedSection>
@@ -87,7 +91,7 @@ export default async function BloggPage() {
               <span className="font-body text-[11px] font-semibold tracking-[0.3em] uppercase text-[#0F172A]/30">{featured.category}</span>
               <h2 className="mt-4 font-display text-2xl md:text-3xl lg:text-4xl font-bold text-[#0F172A] leading-[1.12] tracking-tight max-w-3xl">{featured.title}</h2>
               <p className="mt-6 font-body text-lg text-[#4B5563] leading-relaxed max-w-2xl">{featured.excerpt}</p>
-              <div className="mt-6 flex items-center gap-4 font-body text-sm text-[#0F172A]/30"><time dateTime={featured.date}>{formatDate(featured.date)}</time><span className="w-1 h-1 rounded-full bg-[#0F172A]/15" /><span>{featured.readTime} {tc('reading')}</span></div>
+              <div className="mt-6 flex items-center gap-4 font-body text-sm text-[#0F172A]/30"><span className="text-[#0F172A]/50 font-semibold">NorthForce Advisory</span><span className="w-1 h-1 rounded-full bg-[#0F172A]/15" /><time dateTime={featured.date}>{formatDate(featured.date)}</time><span className="w-1 h-1 rounded-full bg-[#0F172A]/15" /><span>{featured.readTime} {tc('reading')}</span></div>
             </div>
           </AnimatedSection>
         </div>
@@ -101,7 +105,7 @@ export default async function BloggPage() {
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-16 items-baseline">
                   <div className="lg:col-span-2"><time dateTime={post.date} className="font-body text-sm text-[#0F172A]/30">{formatDate(post.date)}</time><span className="block font-body text-[11px] font-semibold tracking-[0.25em] uppercase text-[#0F172A]/20 mt-1">{post.category}</span></div>
                   <div className="lg:col-span-7"><h3 className="font-display text-xl lg:text-2xl font-bold text-[#0F172A] leading-tight group-hover:text-[#0F172A]/60 transition-colors duration-300">{post.title}</h3><p className="mt-3 font-body text-[#4B5563] leading-relaxed max-w-lg">{post.excerpt}</p></div>
-                  <div className="lg:col-span-3 flex items-center lg:justify-end"><span className="font-body text-sm text-[#0F172A]/30">{post.readTime} {tc('reading')}</span></div>
+                  <div className="lg:col-span-3 flex items-center lg:justify-end gap-3"><span className="font-body text-sm text-[#0F172A]/40 font-semibold">NorthForce Advisory</span><span className="w-1 h-1 rounded-full bg-[#0F172A]/15" /><span className="font-body text-sm text-[#0F172A]/30">{post.readTime} {tc('reading')}</span></div>
                 </div>
               </article>
             </AnimatedSection>

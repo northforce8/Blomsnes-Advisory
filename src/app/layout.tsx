@@ -1,25 +1,26 @@
-import type { Metadata } from "next";
 import { NextIntlClientProvider } from "next-intl";
-import { getLocale, getMessages } from "next-intl/server";
+import { getLocale, getMessages, getTranslations } from "next-intl/server";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
-import { SITE_CONFIG } from "@/lib/constants";
+import { JsonLd } from "@/components/JsonLd";
 import "./globals.css";
 
-export const metadata: Metadata = {
-  title: {
-    default: `${SITE_CONFIG.name} — Strategisk Affärsutveckling`,
-    template: `%s — ${SITE_CONFIG.name}`,
-  },
-  description:
-    "Janicke Blomsnes hjälper företag att växa genom strategisk affärsutveckling, digital transformation och personlig coaching.",
-  metadataBase: new URL(SITE_CONFIG.url),
-  openGraph: {
-    type: "website",
-    locale: "sv_SE",
-    siteName: SITE_CONFIG.name,
-  },
-};
+export async function generateMetadata() {
+  const t = await getTranslations('meta');
+  const locale = await getLocale();
+  const ogLocale = locale === 'en' ? 'en_US' : locale === 'no' ? 'nb_NO' : 'sv_SE';
+  return {
+    title: { default: t('homeTitle'), template: `%s — NorthForce Advisory` },
+    description: t('homeDesc'),
+    metadataBase: new URL('https://northforceadvisory.se'),
+    alternates: { canonical: '/' },
+    openGraph: { type: 'website', locale: ogLocale, siteName: 'NorthForce Advisory' },
+    twitter: { card: 'summary_large_image', site: '@northforceadvisory' },
+    authors: [{ name: 'NorthForce Advisory', url: 'https://northforceadvisory.se/om' }],
+    creator: 'NorthForce Advisory',
+    publisher: 'NorthForce Advisory',
+  };
+}
 
 export default async function RootLayout({
   children,
@@ -32,6 +33,7 @@ export default async function RootLayout({
   return (
     <html lang={locale}>
       <body className="min-h-screen flex flex-col">
+        <JsonLd locale={locale} />
         <NextIntlClientProvider messages={messages}>
           <Header />
           <main className="flex-1 pt-20">{children}</main>

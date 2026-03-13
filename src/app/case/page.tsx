@@ -1,11 +1,14 @@
-import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { AnimatedSection } from "@/components/ui";
+import { BreadcrumbSchema } from "@/components/BreadcrumbSchema";
 import { sanityFetch, queries } from "@/lib/sanity";
 import { getTranslations } from "next-intl/server";
 
-export const metadata: Metadata = { title: "Case", description: "Se hur Blomsnes Development har hjälpt företag växa genom strategisk affärsutveckling och coaching." };
+export async function generateMetadata() {
+  const t = await getTranslations('meta');
+  return { title: t('caseTitle'), description: t('caseDesc') };
+}
 
 /* ── Sanity case type ── */
 
@@ -61,6 +64,7 @@ export default async function CasePage() {
 
   return (
     <>
+      <BreadcrumbSchema items={[{ name: t('label'), href: '/case' }]} />
       <section className="py-28 lg:py-36 bg-[#0F172A] text-white">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <AnimatedSection>

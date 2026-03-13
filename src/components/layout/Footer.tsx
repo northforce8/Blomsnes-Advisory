@@ -28,7 +28,7 @@ export async function Footer() {
             <div className="lg:col-span-5">
               <Image
                 src="/logo-light.svg"
-                alt="Blomsnes Development"
+                alt="NorthForce Advisory"
                 width={200}
                 height={24}
                 className="h-6 w-auto mb-8"

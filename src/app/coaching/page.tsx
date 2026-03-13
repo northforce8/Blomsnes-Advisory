@@ -1,11 +1,14 @@
-import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { AnimatedSection } from "@/components/ui";
+import { BreadcrumbSchema } from "@/components/BreadcrumbSchema";
 import { getTranslations } from "next-intl/server";
 
-export const metadata: Metadata = { title: "Coaching & Ledarskap", description: "Personlig coaching för företagsledare och entreprenörer. Utveckla ert ledarskap med Blomsnes Development." };
+export async function generateMetadata() {
+  const t = await getTranslations('meta');
+  return { title: t('coachingTitle'), description: t('coachingDesc') };
+}
 
 export default async function CoachingPage() {
   const t = await getTranslations('coaching');
@@ -28,6 +31,7 @@ export default async function CoachingPage() {
 
   return (
     <>
+      <BreadcrumbSchema items={[{ name: t('label'), href: '/coaching' }]} />
       <section className="py-28 lg:py-36 bg-white">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
