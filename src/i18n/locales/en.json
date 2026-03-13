@@ -1,0 +1,15 @@
+{
+  "nav": {
+    "om": "About",
+    "tjanster": "Services",
+    "case": "Cases",
+    "blogg": "Blog",
+    "kontakt": "Contact",
+    "boka": "Book a meeting"
+  },
+  "common": {
+    "readMore": "Read more",
+    "bookConsultation": "Book consultation",
+    "backTo": "Back to"
+  }
+}

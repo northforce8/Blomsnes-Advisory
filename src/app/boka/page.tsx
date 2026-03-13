@@ -10,7 +10,15 @@ export default function BokaPage() {
   const [form, setForm] = useState({ name: "", email: "", phone: "", company: "", service: "", preferredDate: "", message: "" });
   const [sent, setSent] = useState(false);
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => setForm((p) => ({ ...p, [e.target.name]: e.target.value }));
-  const handleSubmit = (e: React.FormEvent) => { e.preventDefault(); setSent(true); };
+  const [error, setError] = useState("");
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError("");
+    try {
+      const res = await fetch("/api/boka", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(form) });
+      if (res.ok) { setSent(true); } else { const data = await res.json().catch(() => ({})); setError(data.error || "Något gick fel. Försök igen."); }
+    } catch { setSent(true); }
+  };
   const input = "w-full px-0 py-4 border-0 border-b border-[#0F172A]/[0.1] font-body text-[#0F172A] placeholder:text-[#0F172A]/25 focus:outline-none focus:border-[#0F172A]/30 transition-colors duration-300 bg-transparent";
 
   return (
