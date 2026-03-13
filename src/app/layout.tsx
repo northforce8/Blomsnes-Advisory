@@ -1,24 +1,35 @@
-import type { Metadata } from 'next';
-import { Cormorant_Garamond, DM_Sans, JetBrains_Mono } from 'next/font/google';
-import './globals.css';
-
-const serif = Cormorant_Garamond({ subsets: ['latin'], weight: ['300','400','500','600','700'], variable: '--font-serif', display: 'swap' });
-const sans = DM_Sans({ subsets: ['latin'], weight: ['300','400','500','600','700'], variable: '--font-sans', display: 'swap' });
-const mono = JetBrains_Mono({ subsets: ['latin'], weight: ['400','500'], variable: '--font-mono', display: 'swap' });
+import type { Metadata } from "next";
+import { Header } from "@/components/layout/Header";
+import { Footer } from "@/components/layout/Footer";
+import { SITE_CONFIG } from "@/lib/constants";
+import "./globals.css";
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://blomsnes-advisory.vercel.app'),
-  title: { default: 'Blomsnes Advisory | Strategisk Rådgivning', template: '%s | Blomsnes Advisory' },
-  description: 'Strategisk rådgivning, executive coaching och transformationsledning för nordiska företag.',
-  openGraph: { type: 'website', locale: 'sv_SE', siteName: 'Blomsnes Advisory' },
-  robots: { index: true, follow: true },
+  title: {
+    default: `${SITE_CONFIG.name} — Strategisk Affärsutveckling`,
+    template: `%s — ${SITE_CONFIG.name}`,
+  },
+  description:
+    "Janicke Blomsnes hjälper företag att växa genom strategisk affärsutveckling, digital transformation och personlig coaching.",
+  metadataBase: new URL(SITE_CONFIG.url),
+  openGraph: {
+    type: "website",
+    locale: "sv_SE",
+    siteName: SITE_CONFIG.name,
+  },
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
-    <html lang="sv" className={`${serif.variable} ${sans.variable} ${mono.variable}`}>
-      <body className="bg-paper text-ink font-sans antialiased">
-        {children}
+    <html lang="sv">
+      <body className="min-h-screen flex flex-col">
+        <Header />
+        <main className="flex-1 pt-20">{children}</main>
+        <Footer />
       </body>
     </html>
   );

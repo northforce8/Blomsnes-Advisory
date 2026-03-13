@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "blomsnes-v3",
+      "runtimeExecutable": "bash",
+      "runtimeArgs": ["-c", "cd /Users/patrikselin/Downloads/blomsnes-site.v3 && npx next dev -p 3007"],
+      "port": 3007
+    }
+  ]
+}
