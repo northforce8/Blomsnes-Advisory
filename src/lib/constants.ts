@@ -5,8 +5,19 @@ export const SITE_CONFIG = {
   founder: "NorthForce Advisory",
   url: process.env.NEXT_PUBLIC_SITE_URL || "https://northforceadvisory.se",
   email: "kontakt@northforceadvisory.se",
-  phone: "+46 70 000 00 00",
-  location: "Sverige",
+  phone: "+46 10 337 13 34",
+  address: "Karlavägen 18",
+  postalCode: "114 31",
+  city: "Stockholm",
+  country: "Sweden",
+  location: "Stockholm, Sweden",
+  socials: {
+    linkedin: "https://linkedin.com/company/northforceadvisory",
+    twitter: "https://x.com/northforceadv",
+    youtube: "https://youtube.com/@northforceadvisory",
+    instagram: "https://instagram.com/northforceadvisory",
+    facebook: "https://facebook.com/northforceadvisory",
+  },
 } as const;
 
 export const NAV_ITEMS: NavItem[] = [

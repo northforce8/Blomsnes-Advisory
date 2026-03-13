@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { ArrowRight, Mail, MapPin } from "lucide-react";
+import { ArrowRight, Mail, MapPin, Phone } from "lucide-react";
 import { AnimatedSection } from "@/components/ui";
 import { SITE_CONFIG } from "@/lib/constants";
 import { useTranslations } from "next-intl";
@@ -83,10 +83,17 @@ export default function KontaktPage() {
                           </div>
                         </li>
                         <li className="flex items-start gap-4">
+                          <Phone className="w-5 h-5 text-[#0F172A]/20 mt-0.5" />
+                          <div>
+                            <span className="block font-body text-sm text-[#0F172A]/30 mb-1">{t('phoneLabel')}</span>
+                            <a href={`tel:${SITE_CONFIG.phone.replace(/\s/g, "")}`} className="font-body text-[#0F172A] hover:text-[#0F172A]/60 transition-colors duration-200">{SITE_CONFIG.phone}</a>
+                          </div>
+                        </li>
+                        <li className="flex items-start gap-4">
                           <MapPin className="w-5 h-5 text-[#0F172A]/20 mt-0.5" />
                           <div>
                             <span className="block font-body text-sm text-[#0F172A]/30 mb-1">{t('locationLabel')}</span>
-                            <span className="font-body text-[#0F172A]">{SITE_CONFIG.location}</span>
+                            <span className="font-body text-[#0F172A]">{SITE_CONFIG.address}<br />{SITE_CONFIG.postalCode} {SITE_CONFIG.city}<br />{SITE_CONFIG.country}</span>
                           </div>
                         </li>
                       </ul>

@@ -16,7 +16,8 @@
     "contact": "Contact",
     "bookCall": "Book a call",
     "rights": "All rights reserved.",
-    "privacy": "Privacy Policy"
+    "privacy": "Privacy Policy",
+    "followUs": "Follow Us"
   },
   "common": {
     "readMore": "Read more",
@@ -309,6 +310,7 @@
     "error": "Something went wrong. Please try again.",
     "infoLabel": "Contact information",
     "emailLabel": "Email",
+    "phoneLabel": "Phone",
     "locationLabel": "Location",
     "preferCallTitle": "Prefer to talk?",
     "preferCallDesc": "Book a free call directly and let us discuss your needs and opportunities.",

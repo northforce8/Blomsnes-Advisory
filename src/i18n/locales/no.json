@@ -16,7 +16,8 @@
     "contact": "Kontakt",
     "bookCall": "Book en samtale",
     "rights": "Alle rettigheter forbeholdt.",
-    "privacy": "Personvernpolicy"
+    "privacy": "Personvernpolicy",
+    "followUs": "Følg oss"
   },
   "common": {
     "readMore": "Les mer",
@@ -309,6 +310,7 @@
     "error": "Noe gikk galt. Prøv igjen.",
     "infoLabel": "Kontaktinformasjon",
     "emailLabel": "E-post",
+    "phoneLabel": "Telefon",
     "locationLabel": "Sted",
     "preferCallTitle": "Foretrekker dere å snakke?",
     "preferCallDesc": "Book en gratis samtale direkte så snakker vi om deres behov og muligheter.",

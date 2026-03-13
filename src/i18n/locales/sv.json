@@ -16,7 +16,8 @@
     "contact": "Kontakt",
     "bookCall": "Boka ett samtal",
     "rights": "Alla rättigheter förbehållna.",
-    "privacy": "Integritetspolicy"
+    "privacy": "Integritetspolicy",
+    "followUs": "Följ oss"
   },
   "common": {
     "readMore": "Läs mer",
@@ -309,6 +310,7 @@
     "error": "Något gick fel. Försök igen.",
     "infoLabel": "Kontaktinformation",
     "emailLabel": "E-post",
+    "phoneLabel": "Telefon",
     "locationLabel": "Plats",
     "preferCallTitle": "Föredrar ni att prata?",
     "preferCallDesc": "Boka ett kostnadsfritt samtal direkt så pratar vi om era behov och möjligheter.",
