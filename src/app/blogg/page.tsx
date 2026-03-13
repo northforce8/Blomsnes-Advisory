@@ -4,7 +4,7 @@ import { AnimatedSection } from "@/components/ui";
 import { BreadcrumbSchema } from "@/components/BreadcrumbSchema";
 import { formatDate } from "@/lib/utils";
 import { sanityFetch, queries } from "@/lib/sanity";
-import { getTranslations } from "next-intl/server";
+import { getTranslations, getLocale } from "next-intl/server";
 
 export async function generateMetadata() {
   const t = await getTranslations('meta');
@@ -38,6 +38,7 @@ function normalizePost(post: SanityPost) {
 export default async function BloggPage() {
   const t = await getTranslations('blog');
   const tc = await getTranslations('common');
+  const locale = await getLocale();
 
   /* ── Hardcoded fallback data (used when Sanity is not configured) ── */
 
@@ -58,7 +59,7 @@ export default async function BloggPage() {
   try {
     const sanityPosts = await sanityFetch<SanityPost[]>({
       query: queries.allPosts,
-      params: { lang: "sv" },
+      params: { lang: locale },
       tags: ["posts"],
     });
     if (sanityPosts && sanityPosts.length > 0) {

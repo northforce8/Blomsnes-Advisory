@@ -4,7 +4,7 @@ import { Resend } from 'resend';
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { name, email, message, consent } = body;
+    const { name, email, phone, company, message, consent } = body;
 
     if (!name || !email || !message || !consent) {
       return NextResponse.json({ error: 'Obligatoriska fält saknas' }, { status: 400 });
@@ -12,7 +12,6 @@ export async function POST(request: NextRequest) {
 
     const toEmail = process.env.CONTACT_EMAIL;
     if (!toEmail || !process.env.RESEND_API_KEY) {
-      // Graceful degradation: return success if Resend is not configured
       console.error('Resend not configured: missing RESEND_API_KEY or CONTACT_EMAIL');
       return NextResponse.json({ success: true, message: 'Meddelande mottaget' });
     }
@@ -23,8 +22,8 @@ export async function POST(request: NextRequest) {
       to: toEmail,
       replyTo: email,
       subject: `Nytt kontaktmeddelande från ${name}`,
-      text: `Namn: ${name}\nEmail: ${email}\n\nMeddelande:\n${message}`,
-      html: `<p><strong>Namn:</strong> ${name}</p><p><strong>Email:</strong> <a href="mailto:${email}">${email}</a></p><hr/><p><strong>Meddelande:</strong></p><p>${message.replace(/\n/g, '<br/>')}</p>`,
+      text: `Namn: ${name}\nEmail: ${email}${phone ? `\nTelefon: ${phone}` : ''}${company ? `\nFöretag: ${company}` : ''}\n\nMeddelande:\n${message}`,
+      html: `<p><strong>Namn:</strong> ${name}</p><p><strong>Email:</strong> <a href="mailto:${email}">${email}</a></p>${phone ? `<p><strong>Telefon:</strong> ${phone}</p>` : ''}${company ? `<p><strong>Företag:</strong> ${company}</p>` : ''}<hr/><p><strong>Meddelande:</strong></p><p>${message.replace(/\n/g, '<br/>')}</p>`,
     });
 
     return NextResponse.json({ success: true, message: 'Meddelande mottaget' });

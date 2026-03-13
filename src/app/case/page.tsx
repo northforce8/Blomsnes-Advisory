@@ -3,7 +3,7 @@ import { ArrowRight } from "lucide-react";
 import { AnimatedSection } from "@/components/ui";
 import { BreadcrumbSchema } from "@/components/BreadcrumbSchema";
 import { sanityFetch, queries } from "@/lib/sanity";
-import { getTranslations } from "next-intl/server";
+import { getTranslations, getLocale } from "next-intl/server";
 
 export async function generateMetadata() {
   const t = await getTranslations('meta');
@@ -37,6 +37,7 @@ function normalizeCase(c: SanityCase, index: number) {
 
 export default async function CasePage() {
   const t = await getTranslations('cases');
+  const locale = await getLocale();
 
   /* ── Hardcoded fallback data (used when Sanity is not configured) ── */
 
@@ -52,7 +53,7 @@ export default async function CasePage() {
   try {
     const sanityCases = await sanityFetch<SanityCase[]>({
       query: queries.allCases,
-      params: { lang: "sv" },
+      params: { lang: locale },
       tags: ["cases"],
     });
     if (sanityCases && sanityCases.length > 0) {

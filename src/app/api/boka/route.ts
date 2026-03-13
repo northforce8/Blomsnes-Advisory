@@ -4,9 +4,9 @@ import { Resend } from 'resend';
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { name, email, meetingType, message } = body;
+    const { name, email, phone, company, service, preferredDate, message } = body;
 
-    if (!name || !email || !meetingType) {
+    if (!name || !email || !service) {
       return NextResponse.json({ error: 'Obligatoriska fält saknas' }, { status: 400 });
     }
 
@@ -22,8 +22,8 @@ export async function POST(request: NextRequest) {
       to: toEmail,
       replyTo: email,
       subject: `Ny bokningsförfrågan från ${name}`,
-      text: `Namn: ${name}\nEmail: ${email}\nMötestyp: ${meetingType}${message ? `\n\nMeddelande:\n${message}` : ''}`,
-      html: `<p><strong>Namn:</strong> ${name}</p><p><strong>Email:</strong> <a href="mailto:${email}">${email}</a></p><p><strong>Mötestyp:</strong> ${meetingType}</p>${message ? `<hr/><p><strong>Meddelande:</strong></p><p>${message.replace(/\n/g, '<br/>')}</p>` : ''}`,
+      text: `Namn: ${name}\nEmail: ${email}${phone ? `\nTelefon: ${phone}` : ''}${company ? `\nFöretag: ${company}` : ''}\nTjänst: ${service}${preferredDate ? `\nÖnskat datum: ${preferredDate}` : ''}${message ? `\n\nMeddelande:\n${message}` : ''}`,
+      html: `<p><strong>Namn:</strong> ${name}</p><p><strong>Email:</strong> <a href="mailto:${email}">${email}</a></p>${phone ? `<p><strong>Telefon:</strong> ${phone}</p>` : ''}${company ? `<p><strong>Företag:</strong> ${company}</p>` : ''}<p><strong>Tjänst:</strong> ${service}</p>${preferredDate ? `<p><strong>Önskat datum:</strong> ${preferredDate}</p>` : ''}${message ? `<hr/><p><strong>Meddelande:</strong></p><p>${message.replace(/\n/g, '<br/>')}</p>` : ''}`,
     });
 
     return NextResponse.json({ success: true, message: 'Bokning mottagen' });
