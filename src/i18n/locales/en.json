@@ -1,15 +1,28 @@
 {
   "nav": {
+    "hem": "Home",
     "om": "About",
     "tjanster": "Services",
-    "case": "Cases",
+    "strategiTillResultat": "Strategy to Results",
+    "coaching": "Coaching",
     "blogg": "Blog",
+    "case": "Cases",
     "kontakt": "Contact",
-    "boka": "Book a meeting"
+    "boka": "Book a call"
+  },
+  "footer": {
+    "description": "Strategic business development for Nordic companies and leadership teams. From insight and strategy to measurable results.",
+    "navigation": "Navigation",
+    "contact": "Contact",
+    "bookCall": "Book a call",
+    "rights": "All rights reserved.",
+    "privacy": "Privacy Policy"
   },
   "common": {
     "readMore": "Read more",
     "bookConsultation": "Book consultation",
-    "backTo": "Back to"
+    "backTo": "Back to",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu"
   }
 }

@@ -3,12 +3,15 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { AnimatedSection } from "@/components/ui";
 import { formatDate } from "@/lib/utils";
+import { sanityFetch, queries } from "@/lib/sanity";
 
 export const metadata: Metadata = { title: "Blogg", description: "Insikter om affärsutveckling, ledarskap och tillväxt från Blomsnes Development." };
 
-const featured = { title: "Fem tecken på att er strategi inte lever i organisationen", excerpt: "Många företag har ambitiösa strategidokument som aldrig omsätts i handling. Här är fem vanliga tecken — och vad ni kan göra åt det.", date: "2025-01-15", readTime: "6 min", category: "Strategi" };
+/* ── Hardcoded fallback data (used when Sanity is not configured) ── */
 
-const posts = [
+const fallbackFeatured = { title: "Fem tecken på att er strategi inte lever i organisationen", excerpt: "Många företag har ambitiösa strategidokument som aldrig omsätts i handling. Här är fem vanliga tecken — och vad ni kan göra åt det.", date: "2025-01-15", readTime: "6 min", category: "Strategi" };
+
+const fallbackPosts = [
   { title: "Ledarskapets tysta kraft: att lyssna innan du leder", excerpt: "De bästa ledarna är inte de som pratar mest — utan de som lyssnar djupast.", date: "2024-12-20", readTime: "5 min", category: "Ledarskap" },
   { title: "Digital transformation: det handlar inte om tekniken", excerpt: "Företag som lyckas förstår att tekniken bara är ett verktyg. Den verkliga förändringen sker i kultur och tankesätt.", date: "2024-11-28", readTime: "7 min", category: "Digital Transformation" },
   { title: "Från osäkerhet till beslutskraft: en coachingresa", excerpt: "Hur en VD gick från att skjuta upp svåra beslut till att fatta dem med trygghet — och vad det innebar.", date: "2024-11-05", readTime: "8 min", category: "Coaching" },
@@ -16,7 +19,49 @@ const posts = [
   { title: "Varför de flesta förändringsinitiativ misslyckas", excerpt: "Tre kritiska faktorer som skiljer framgång från misslyckande i organisatorisk förändring.", date: "2024-09-18", readTime: "7 min", category: "Förändringsledning" },
 ];
 
-export default function BloggPage() {
+/* ── Sanity post type ── */
+
+interface SanityPost {
+  slug?: string;
+  title: string;
+  excerpt: string;
+  category?: string;
+  publishedAt?: string;
+  readTime?: string;
+}
+
+/* ── Normalize Sanity post to display format ── */
+
+function normalizePost(post: SanityPost) {
+  return {
+    title: post.title,
+    excerpt: post.excerpt || "",
+    date: post.publishedAt || "",
+    readTime: post.readTime || "5 min",
+    category: post.category || "",
+    slug: post.slug,
+  };
+}
+
+export default async function BloggPage() {
+  let featured = fallbackFeatured;
+  let posts = fallbackPosts;
+
+  /* Try Sanity — gracefully fall back to hardcoded data */
+  try {
+    const sanityPosts = await sanityFetch<SanityPost[]>({
+      query: queries.allPosts,
+      params: { lang: "sv" },
+      tags: ["posts"],
+    });
+    if (sanityPosts && sanityPosts.length > 0) {
+      featured = normalizePost(sanityPosts[0]);
+      posts = sanityPosts.slice(1).map(normalizePost);
+    }
+  } catch {
+    /* Sanity unavailable — use fallback data */
+  }
+
   return (
     <>
       <section className="py-28 lg:py-36 bg-white">

@@ -1,15 +1,28 @@
 {
   "nav": {
-    "om": "Om oss",
+    "hem": "Hem",
+    "om": "Om",
     "tjanster": "Tjänster",
-    "case": "Case",
+    "strategiTillResultat": "Strategi till Resultat",
+    "coaching": "Coaching",
     "blogg": "Blogg",
+    "case": "Case",
     "kontakt": "Kontakt",
-    "boka": "Boka möte"
+    "boka": "Boka samtal"
+  },
+  "footer": {
+    "description": "Strategisk affärsutveckling för nordiska företag och ledningsgrupper. Från insikt och strategi till mätbara resultat.",
+    "navigation": "Navigation",
+    "contact": "Kontakt",
+    "bookCall": "Boka ett samtal",
+    "rights": "Alla rättigheter förbehållna.",
+    "privacy": "Integritetspolicy"
   },
   "common": {
     "readMore": "Läs mer",
     "bookConsultation": "Boka konsultation",
-    "backTo": "Tillbaka till"
+    "backTo": "Tillbaka till",
+    "openMenu": "Öppna meny",
+    "closeMenu": "Stäng meny"
   }
 }

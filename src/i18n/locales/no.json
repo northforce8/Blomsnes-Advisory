@@ -1,15 +1,28 @@
 {
   "nav": {
+    "hem": "Hjem",
     "om": "Om oss",
     "tjanster": "Tjenester",
-    "case": "Case",
+    "strategiTillResultat": "Strategi til Resultat",
+    "coaching": "Coaching",
     "blogg": "Blogg",
+    "case": "Case",
     "kontakt": "Kontakt",
     "boka": "Book møte"
+  },
+  "footer": {
+    "description": "Strategisk forretningsutvikling for nordiske selskaper og ledergrupper. Fra innsikt og strategi til målbare resultater.",
+    "navigation": "Navigasjon",
+    "contact": "Kontakt",
+    "bookCall": "Book en samtale",
+    "rights": "Alle rettigheter forbeholdt.",
+    "privacy": "Personvernpolicy"
   },
   "common": {
     "readMore": "Les mer",
     "bookConsultation": "Book konsultasjon",
-    "backTo": "Tilbake til"
+    "backTo": "Tilbake til",
+    "openMenu": "Åpne meny",
+    "closeMenu": "Lukke meny"
   }
 }

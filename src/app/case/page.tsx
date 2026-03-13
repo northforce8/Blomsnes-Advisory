@@ -2,16 +2,60 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { AnimatedSection } from "@/components/ui";
+import { sanityFetch, queries } from "@/lib/sanity";
 
 export const metadata: Metadata = { title: "Case", description: "Se hur Blomsnes Development har hjälpt företag växa genom strategisk affärsutveckling och coaching." };
 
-const cases = [
+/* ── Hardcoded fallback data (used when Sanity is not configured) ── */
+
+const fallbackCases = [
   { number: "01", category: "Strategisk Affärsutveckling", title: "Tillväxtstrategi för tjänsteföretag i förändring", challenge: "Ett medelstort tjänsteföretag stod inför stagnerande tillväxt och ökande konkurrens. Den befintliga affärsmodellen hade nått sin gräns.", approach: "Genom djupgående marknads- och konkurrensanalys identifierade vi nya tillväxtmöjligheter och utformade en differentierad positioneringsstrategi.", results: ["Ny strategisk riktning förankrad i hela organisationen", "Tre nya tillväxtområden med hög potential identifierade", "Ökad omsättning inom 12 månader", "Stärkt varumärkesposition"] },
   { number: "02", category: "Digital Transformation", title: "Digital mognad i traditionell bransch", challenge: "En organisation behövde modernisera processer och kundupplevelser för att möta förändrade krav och ny konkurrens från digitala aktörer.", approach: "Vi genomförde en digital mognadsbedömning och skapade en transformationsroadmap med fokus på kundresan och interna processer.", results: ["Digital transformationsplan med tydlig prioritering", "Digitaliserad kundresa med ökad kundnöjdhet", "Effektiviserade processer som frigjorde resurser", "Ny digital kompetens i organisationen"] },
   { number: "03", category: "Coaching & Ledarskap", title: "Ledarskapscoaching för ny VD", challenge: "En nytillträdd VD behövde snabbt etablera sig, bygga förtroende och navigera flera parallella förändringsinitiativ.", approach: "Genom individuell coaching arbetade vi med ledarskapsvisionen, förändringsledning och kommunikation med nyckelintressenter.", results: ["Tydlig ledarskapsvision förankrad i organisationen", "Framgångsrik omorganisation genomförd", "Ökad tillit från styrelse och ledningsgrupp", "Personlig tillväxt och ökat ledarskapsmod"] },
 ];
 
-export default function CasePage() {
+/* ── Sanity case type ── */
+
+interface SanityCase {
+  slug?: string;
+  title: string;
+  client?: string;
+  industry?: string;
+  excerpt?: string;
+  tags?: string[];
+  results?: string[];
+}
+
+/* ── Normalize Sanity case to display format ── */
+
+function normalizeCase(c: SanityCase, index: number) {
+  return {
+    number: String(index + 1).padStart(2, "0"),
+    category: c.industry || "",
+    title: c.title,
+    challenge: c.excerpt || "",
+    approach: "",
+    results: c.results || [],
+  };
+}
+
+export default async function CasePage() {
+  let cases = fallbackCases;
+
+  /* Try Sanity — gracefully fall back to hardcoded data */
+  try {
+    const sanityCases = await sanityFetch<SanityCase[]>({
+      query: queries.allCases,
+      params: { lang: "sv" },
+      tags: ["cases"],
+    });
+    if (sanityCases && sanityCases.length > 0) {
+      cases = sanityCases.map(normalizeCase);
+    }
+  } catch {
+    /* Sanity unavailable — use fallback data */
+  }
+
   return (
     <>
       <section className="py-28 lg:py-36 bg-[#0F172A] text-white">
@@ -38,12 +82,18 @@ export default function CasePage() {
                     <h2 className="mt-4 font-display text-2xl md:text-3xl font-bold text-[#0F172A] leading-[1.12] tracking-tight">{c.title}</h2>
                   </div>
                   <div className="lg:col-span-7 space-y-10">
-                    <div><h3 className="font-body text-[11px] font-semibold tracking-[0.3em] uppercase text-[#0F172A]/40 mb-3">Utmaning</h3><p className="font-body text-[#4B5563] leading-relaxed">{c.challenge}</p></div>
-                    <div><h3 className="font-body text-[11px] font-semibold tracking-[0.3em] uppercase text-[#0F172A]/40 mb-3">Angreppssätt</h3><p className="font-body text-[#4B5563] leading-relaxed">{c.approach}</p></div>
-                    <div className="p-8 lg:p-10" style={{ backgroundColor: "#F5F0EB" }}>
-                      <h3 className="font-body text-[11px] font-semibold tracking-[0.3em] uppercase text-[#0F172A]/40 mb-6">Resultat</h3>
-                      <ul className="space-y-4">{c.results.map((r) => (<li key={r} className="flex items-start gap-4 font-body text-[#4B5563]"><div className="w-1.5 h-1.5 rounded-full bg-[#0F172A]/20 mt-2.5 flex-shrink-0" /><span>{r}</span></li>))}</ul>
-                    </div>
+                    {c.challenge && (
+                      <div><h3 className="font-body text-[11px] font-semibold tracking-[0.3em] uppercase text-[#0F172A]/40 mb-3">Utmaning</h3><p className="font-body text-[#4B5563] leading-relaxed">{c.challenge}</p></div>
+                    )}
+                    {c.approach && (
+                      <div><h3 className="font-body text-[11px] font-semibold tracking-[0.3em] uppercase text-[#0F172A]/40 mb-3">Angreppssätt</h3><p className="font-body text-[#4B5563] leading-relaxed">{c.approach}</p></div>
+                    )}
+                    {c.results.length > 0 && (
+                      <div className="p-8 lg:p-10" style={{ backgroundColor: "#F5F0EB" }}>
+                        <h3 className="font-body text-[11px] font-semibold tracking-[0.3em] uppercase text-[#0F172A]/40 mb-6">Resultat</h3>
+                        <ul className="space-y-4">{c.results.map((r) => (<li key={r} className="flex items-start gap-4 font-body text-[#4B5563]"><div className="w-1.5 h-1.5 rounded-full bg-[#0F172A]/20 mt-2.5 flex-shrink-0" /><span>{r}</span></li>))}</ul>
+                      </div>
+                    )}
                   </div>
                 </div>
               </article>
